@@ -26,38 +26,39 @@ include $core_config['apps_path']['plug'] . "/gateway/smstools/config.php";
 
 switch (_OP_) {
 	case "manage":
-		$content .= _dialog() . "
-			<h2>" . _('Manage smstools') . "</h2>
-			<form action=index.php?app=main&inc=gateway_smstools&op=manage_save method=post>
-			" . _CSRF_FORM_ . "
-			<table class=playsms-table>
-				<tbody>
-					<tr>
-						<td class=label-sizer>" . _('Gateway name') . "</td><td>smstools</td>
-					</tr>
-					<tr>
-						<td>" . _('Default default_queue directory') . "</td><td><input type=text name=up_default_queue value=\"" . $plugin_config['smstools']['default_queue'] . "\"></td>
-					</tr>
-				</tbody>
-			</table>
-			<p><input type=submit class=button value=\"" . _('Save') . "\">
-			</form>
-			<p>" . _back('index.php?app=main&inc=core_gateway&op=gateway_list');
-		_p($content);
+		$tpl = [
+			'name' => 'smstools',
+			'vars' => [
+				'DIALOG_DISPLAY' => _dialog(),
+				'Manage' => _('Manage'),
+				'Gateway' => _('Gateway'),
+				'Queue directory' => _('Queue directory'),
+				'Module timezone' => _('Module timezone'),
+				'Save' => _('Save'),
+				'HINT_TIMEZONE' => _hint(_('Eg: +0700 for UTC+7 or Jakarta/Bangkok timezone')),
+				'BUTTON_BACK' => _back('index.php?app=main&inc=core_gateway&op=gateway_list'),
+				'gateway_name' => $plugin_config['smstools']['name'],
+				'queue' => $plugin_config['smstools']['queue'],
+				'datetime_timezone' => $plugin_config['smstools']['datetime_timezone']
+			]
+		];
+		_p(tpl_apply($tpl));
 		break;
+
 	case "manage_save":
-		$up_default_queue = trim(core_sanitize_path($_POST['up_default_queue']));
-		if (!$up_default_queue) {
-			$up_default_queue = "/var/spool/sms";
+		$queue = isset($_REQUEST['queue']) && $_REQUEST['queue']
+			? core_sanitize_path($_REQUEST['queue'])
+			: '/var/spool/sms';
+		$datetime_timezone = $_REQUEST['datetime_timezone'] ?? '';
+		$items = [
+			'queue' => $queue,
+			'datetime_timezone' => $datetime_timezone
+		];
+		if (registry_update(0, 'gateway', 'smstools', $items)) {
+			$_SESSION['dialog']['info'][] = _('Gateway module configurations has been saved');
+		} else {
+			$_SESSION['dialog']['danger'][] = _('Fail to save gateway module configurations');
 		}
-		
-		$items = array(
-			'default_queue' => $up_default_queue 
-		);
-		registry_update(0, 'gateway', 'smstools', $items);
-		
-		$_SESSION['dialog']['info'][] = _('Changes have been made');
 		header("Location: " . _u('index.php?app=main&inc=gateway_smstools&op=manage'));
 		exit();
-		break;
 }
