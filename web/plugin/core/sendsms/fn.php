@@ -29,11 +29,6 @@ function sendsms_manipulate_prefix($number, $user = [])
 {
 	global $core_config;
 
-	if (!is_array($user)) {
-
-		return $number;
-	}
-
 	_log('before prefix manipulation:[' . $number . ']', 3, 'sendsms_manipulate_prefix');
 
 	$number = core_sanitize_mobile($number);
@@ -95,7 +90,7 @@ function sendsms_queue_create($sms_sender, $sms_footer, $sms_msg, $uid, $gpid = 
 
 	$db_query = "INSERT INTO " . _DB_PREF_ . "_tblSMSOutgoing_queue ";
 	$db_query .= "(queue_code,datetime_entry,datetime_scheduled,uid,gpid,sender_id,footer,message,sms_type,unicode,smsc,flag) ";
-	$db_query .= "VALUES (?,?,?,?,?,?,?,?,?,?,?,'2')";
+	$db_query .= "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	$db_argv = [
 		$queue_code,
 		$dt,
@@ -108,6 +103,7 @@ function sendsms_queue_create($sms_sender, $sms_footer, $sms_msg, $uid, $gpid = 
 		$sms_type,
 		$unicode,
 		$smsc,
+		2,
 	];
 	if ($id = dba_insert_id($db_query, $db_argv)) {
 		_log("saved queue_code:" . $queue_code . " id:" . $id, 2, "sendsms_queue_create");
@@ -128,7 +124,7 @@ function sendsms_queue_push($queue_code, $sms_to)
 {
 	$ret = false;
 
-	$db_query = "SELECT id FROM " . _DB_PREF_ . "_tblSMSOutgoing_queue WHERE queue_code=? AND flag='2'";
+	$db_query = "SELECT id FROM " . _DB_PREF_ . "_tblSMSOutgoing_queue WHERE queue_code=? AND flag=2";
 	$db_result = dba_query($db_query, [$queue_code]);
 	$db_row = dba_fetch_array($db_result);
 	if ($queue_id = $db_row['id']) {
@@ -945,6 +941,7 @@ function sendsms($username, $sms_to, $sms_msg, $sms_type = 'text', $unicode = 0,
 		];
 	}
 
+	// convert to array
 	if (!is_array($sms_to)) {
 		$sms_to = explode(',', $sms_to);
 	}
@@ -992,19 +989,11 @@ function sendsms($username, $sms_to, $sms_msg, $sms_type = 'text', $unicode = 0,
 		];
 	}
 
-	if (is_array($sms_to)) {
-		$array_sms_to = $sms_to;
-	} else {
-		$array_sms_to = explode(',', $sms_to);
-	}
-
 	// get manipulated and valid destination numbers
 	$all_sms_to = [];
-	$c_count = count($array_sms_to);
-	for ($i = 0; $i < $c_count; $i++) {
-		if ($c_sms_to = core_sanitize_mobile(trim($array_sms_to[$i]))) {
-			$c_sms_to = sendsms_manipulate_prefix(trim($c_sms_to), $user);
-			$all_sms_to[] = $c_sms_to;
+	foreach ( $sms_to as $to ) {
+		if ($to = sendsms_manipulate_prefix($to, $user)) {
+			$all_sms_to[] = $to;
 		}
 	}
 
