@@ -15,3 +15,6 @@ ALTER TABLE `playsms_tblSMSOutgoing_queue` CHANGE `queue_code` `queue_code` VARC
 ALTER TABLE `playsms_tblUser` CHANGE `token` `token` VARCHAR(255) NOT NULL DEFAULT '';
 
 ALTER TABLE `playsms_tblSMSOutgoing` ADD `remote_id` varchar(255) DEFAULT NULL AFTER `queue_code`, ADD `in_id` int(11) DEFAULT NULL;
+
+-- tblUser
+ALTER TABLE `playsms_tblUser` ADD `expired` varchar(20) NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `salt`;

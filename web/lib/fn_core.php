@@ -411,53 +411,60 @@ function core_safe_html_post($key)
  * Convert timestamp to datetime in UTC
  *
  * @param $timestamp timestamp        
- * @return string current date and time
+ * @return string current date and time in UTC
  */
 function core_convert_datetime($timestamp)
 {
 	global $core_config;
+
 	$tz = core_get_timezone();
-	$ret = date($core_config['datetime']['format'], $timestamp);
+	$datetime = date($core_config['datetime']['format'], $timestamp);
+	$ret = core_adjust_datetime($datetime, $tz);
+
 	return $ret;
 }
 
 /**
- * Get current server date and time in GMT+0
+ * Get current server date and time in UTC
  *
- * @return string current date and time
+ * @return string current date and time in UTC
  */
 function core_get_datetime()
 {
 	global $core_config;
+
 	$tz = core_get_timezone();
 	$dt = date($core_config['datetime']['format'], time());
 	$ret = core_adjust_datetime($dt, $tz);
+
 	return $ret;
 }
 
 /**
- * Get current server date in GMT+0
+ * Get current server date in UTC
  *
- * @return string current date
+ * @return string current date in UTC
  */
 function core_get_date()
 {
 	$ret = core_get_datetime();
 	$arr = explode(' ', $ret);
 	$ret = $arr[0];
+
 	return $ret;
 }
 
 /**
- * Get current server time in GMT+0
+ * Get current server time in UTC
  *
- * @return string current time
+ * @return string current time in UTC
  */
 function core_get_time()
 {
 	$ret = core_get_datetime();
 	$arr = explode(' ', $ret);
 	$ret = $arr[1];
+
 	return $ret;
 }
 
@@ -508,7 +515,7 @@ function core_datetime_offset($tz = 0)
 }
 
 /**
- * Format and adjust date/time from GMT+0 to user's timezone for web display purposes
+ * Format and adjust date/time from UTC to user's timezone for web display purposes
  *
  * @param $time date/time        
  * @param $tz timezone        
@@ -555,11 +562,11 @@ function core_format_datetime($text)
 }
 
 /**
- * Format and adjust date/time to GMT+0 for log or incoming SMS saving purposes
+ * Format and adjust date/time to UTC for log or incoming SMS saving purposes
  *
- * @param $time date/time        
- * @param $tz timezone        
- * @return string formatted date/time with adjusted timezone
+ * @param $time date/time
+ * @param $tz timezone     
+ * @return string formatted date/time with adjusted timezone, in UTC
  */
 function core_adjust_datetime($time, $tz = 0)
 {

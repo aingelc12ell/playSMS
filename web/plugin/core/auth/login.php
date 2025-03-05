@@ -73,7 +73,9 @@ if (_OP_ == 'login') {
 			}
 		}
 
-		if ($username && $continue && $uid = user_username2uid($username)) {
+		$uid = user_username2uid($username);
+
+		if ($uid && $continue) {
 			// setup new session after successful login
 			auth_session_setup($uid);
 
@@ -87,7 +89,11 @@ if (_OP_ == 'login') {
 				auth_session_destroy();
 			}
 		} else {
-			$_SESSION['dialog']['danger'][] = _('Invalid username or password');
+			if (user_is_expired($uid)) {
+				$_SESSION['dialog']['danger'][] = _('Account is expired');
+			} else {
+				$_SESSION['dialog']['danger'][] = _('Invalid username or password');
+			}
 		}
 	}
 

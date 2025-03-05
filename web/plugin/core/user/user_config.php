@@ -71,6 +71,7 @@ switch (_OP_) {
 			$replace_zero = $c_user[0]['replace_zero'];
 			$acl_id = (int) $c_user[0]['acl_id'];
 			$credit = rate_getusercredit($c_username);
+			$expired = core_display_datetime($c_user[0]['expired']);
 		} else {
 			$_SESSION['dialog']['info'][] = _('User does not exist') . ' (' . _('username') . ': ' . $uname . ')';
 			header("Location: " . _u('index.php?app=main&inc=core_user&route=user_mgmnt&op=user_list&view=' . $view));
@@ -231,6 +232,7 @@ switch (_OP_) {
 				'Application options' => _('Application options'),
 				'Username' => _('Username'),
 				'Access Control List' => _('Access Control List'),
+				'Account expiry date' => _('Account expiry date'),
 				'Effective SMS sender ID' => _('Effective SMS sender ID'),
 				'Default sender ID' => _('Default sender ID'),
 				'Default message footer' => _('Default message footer'),
@@ -251,6 +253,7 @@ switch (_OP_) {
 				'Always choose to send as unicode' => _('Always choose to send as unicode'),
 				'Save' => _('Save'),
 				'DIALOG_DISPLAY' => _dialog(),
+				'HTTP_PATH_THEMES' => _HTTP_PATH_THEMES_,
 				'FORM_TITLE' => $form_title,
 				'BUTTON_DELETE' => $button_delete,
 				'BUTTON_BACK' => $button_back,
@@ -282,7 +285,12 @@ switch (_OP_) {
 				'local_length' => $local_length,
 				'replace_zero' => $replace_zero,
 				'credit' => core_display_credit($credit),
-				'option_enable_credit_unicode' => $option_enable_credit_unicode
+				'expired' => $expired,
+				'option_enable_credit_unicode' => $option_enable_credit_unicode,
+				'default_date' => $expired == '0000-00-00 00:00:00' ? '2025-01-01 00:00:00' : $expired,
+			],
+			'ifs' => [
+				'calendar' => file_exists(_HTTP_PATH_THEMES_ . '/common/jscss/bootstrap-datetimepicker/bootstrap-datetimepicker.' . substr($user_config['language_module'], 0, 2) . '.js')
 			],
 		];
 		_p(tpl_apply($tpl));
@@ -302,7 +310,8 @@ switch (_OP_) {
 			'enable_webservices',
 			'webservices_ip',
 			'sender',
-			'acl_id'
+			'acl_id',
+			'expired',
 		];
 
 		$up = [];

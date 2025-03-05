@@ -312,14 +312,12 @@ function user_add_validate($data = [], $flag_edit = false)
 
 		// check if supplied data contains status
 		$data['status'] = (int) $data['status'];
-		if (!($data['status'] == 2 || $data['status'] == 3 || $data['status'] = 4)) {
-			$ret['error_string'] = _('Account status is mandatory');
+		if (!($data['status'] === 2 || $data['status'] === 3 || $data['status'] === 4)) {
+			$ret['error_string'] = _('Account status must be a known value');
 			$ret['status'] = false;
 
 			return $ret;
 		}
-
-
 
 		// name must be at least 1 character
 		if (strlen($data['name']) < 1) {
@@ -510,6 +508,9 @@ function user_add($data = [], $forced = false, $send_email = true)
 		// default disable webservices
 		$data['enable_webservices'] = 0;
 		$data['webservices_ip'] = '127.0.0.1';
+
+		// format expired
+		$data['expired'] = date('Y-m-d', strtotime($data['expired']));
 
 		$v = user_add_validate($data);
 		if ($v['status']) {
@@ -795,7 +796,8 @@ function user_edit_conf($uid, $data = [])
 		'enable_webservices',
 		'webservices_ip',
 		'sender',
-		'acl_id'
+		'acl_id',
+		'expired',
 	];
 
 	$up = [];
@@ -836,6 +838,8 @@ function user_edit_conf($uid, $data = [])
 			if ($uid == $user_config['uid']) {
 				unset($up['acl_id']);
 			}
+
+			$up['expired'] = core_adjust_datetime($up['expired']);
 
 			if (
 				dba_update(
@@ -1282,4 +1286,42 @@ function user_search($keywords = '', $fields = '', $extras = '', $exact = false)
 	}
 
 	return $ret;
+}
+
+/**
+ * Check if user is expired
+ * 
+ * @param int|null $uid User ID
+ * @return bool
+ */
+function user_is_expired(int|null $uid): bool
+{
+	if (empty($uid)) {
+
+		return true;
+	}
+
+	$db_query = "SELECT status,expired,datetime_timezone FROM " . _DB_PREF_ . "_tblUser WHERE flag_deleted=0 AND uid=?";
+	$db_result = dba_query($db_query, [$uid]);
+	if ($db_row = dba_fetch_array($db_result)) {
+		$status = (int) $db_row['status'];
+		if ($status === 2) {
+
+			return false;
+		}
+
+		$expired = trim($db_row['expired']);
+		$datetime_timezone = trim($db_row['datetime_timezone']);
+		if ($expired && $datetime_timezone) {
+			$now = core_get_datetime();
+			$expired = core_adjust_datetime($expired, $datetime_timezone);
+
+			if (strtotime($now) <= strtotime($expired)) {
+
+				return false;
+			}
+		}
+	}
+
+	return true;
 }

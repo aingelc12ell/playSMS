@@ -1323,6 +1323,7 @@ CREATE TABLE `playsms_tblUser` (
   `username` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `salt` varchar(255) NOT NULL DEFAULT '',
+  `expired` varchar(20) NOT NULL DEFAULT '0000-00-00 00:00:00',
   `token` varchar(255) NOT NULL DEFAULT '',
   `enable_webservices` int(11) NOT NULL DEFAULT 0,
   `webservices_ip` varchar(100) NOT NULL DEFAULT '',

@@ -74,6 +74,13 @@ function auth_validate_login($username, $password)
 		return false;
 	}
 
+	// check if user expired
+	if (user_is_expired($uid)) {
+		_log('user expired u:' . $username . ' uid:' . $uid . ' ip:' . _REMOTE_ADDR_, 2, 'auth_validate_login');
+
+		return false;
+	}
+
 	// get user's password and salt, but after using password_hash() salt is not inuse actually
 	$db_query = "SELECT password,salt FROM " . _DB_PREF_ . "_tblUser WHERE flag_deleted=0 AND username=?";
 	$db_result = dba_query($db_query, [$username]);
@@ -213,6 +220,13 @@ function auth_validate_token($token)
 	$username = trim($db_row['username']);
 	$enable_webservices = (bool) $db_row['enable_webservices'];
 	$webservices_ip = trim($db_row['webservices_ip']);
+
+	// check if user expired
+	if (user_is_expired($uid)) {
+		_log('user expired u:' . $username . ' uid:' . $uid . ' ip:' . _REMOTE_ADDR_, 2, 'auth_validate_token');
+
+		return false;
+	}
 
 	// log attempts	- commented, too noisy for webservices
 	//_log('login attempt token:' . $token . ' username:' . $username . ' ip:' . _REMOTE_ADDR_, 3, 'auth_validate_login');

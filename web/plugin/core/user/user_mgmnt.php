@@ -96,14 +96,15 @@ switch (_OP_) {
 			<div class=table-responsive>
 			<table class=playsms-table-list>
 			<thead><tr>
-				<th width='14%'>" . _('Registered') . "</th>
+				<th width='12%'>" . _('Registered') . "</th>
+				<th width='12%'>" . _('Expired') . "</th>
 				" . $parent_column_title . "
-				<th width='12%'>" . _('Username') . "</th>
-				<th width='14%'>" . _('Name') . "</th>
-				<th width='14%'>" . _('Mobile') . "</th>
+				<th width='10%'>" . _('Username') . "</th>
+				<th width='12%'>" . _('Name') . "</th>
+				<th width='12%'>" . _('Mobile') . "</th>
 				<th width='10%'>" . _('Credit') . "</th>
-				<th width='12%'>" . _('ACL') . "</th>										
-				<th width='12%'>" . _('Action') . "</th>
+				<th width='10%'>" . _('ACL') . "</th>									
+				<th width='10%'>" . _('Action') . "</th>
 			</tr></thead>
 			<tbody>";
 		$j = $nav['top'];
@@ -155,6 +156,7 @@ switch (_OP_) {
 			$content .= "
 				<tr>
 					<td>" . core_display_datetime($list[$i]['register_datetime']) . "</td>
+					<td>" . core_display_datetime($list[$i]['expired']) . "</td>
 					" . $parent_column_row . "
 					<td>" . $banned_icon . "" . $list[$i]['username'] . " </td>
 					<td>" . $list[$i]['name'] . "</td>
@@ -228,8 +230,9 @@ switch (_OP_) {
 			'name' => 'user_add',
 			'vars' => [
 				'Account status' => _('Account status'),
-				'Parent account' => _('Parent account') . " (" . _('for subuser only') . ")",
+				'Account expiry date' => _('Account expiry date'),
 				'Access Control List' => _('Access Control List'),
+				'Parent account' => _('Parent account') . " (" . _('for subuser only') . ")",
 				'Username' => _mandatory(_('Username')),
 				'Password' => _mandatory(_('Password')),
 				'Name' => _mandatory(_('Name')),
@@ -242,6 +245,7 @@ switch (_OP_) {
 				'HINT_PARENT' => _hint(_('Parent account is mandatory for subusers only. If no value is given then the subuser will be automatically assigned to user admin')),
 				'STATUS' => $status_label,
 				'DIALOG_DISPLAY' => _dialog(),
+				'HTTP_PATH_THEMES' => _HTTP_PATH_THEMES_,
 				'FORM_TITLE' => $form_title,
 				'FORM_SUB_TITLE' => $form_sub_title,
 				'BUTTON_BACK' => $button_back,
@@ -250,16 +254,16 @@ switch (_OP_) {
 				'select_parent' => $select_parent,
 				'option_acl' => $option_acl,
 				'option_language_module' => $option_language_module,
-				'name' => $name,
-				'email' => $email,
-				'mobile' => $mobile,
-				'datetime_timezone' => $datetime_timezone,
+			],
+			'ifs' => [
+				'calendar' => file_exists(_HTTP_PATH_THEMES_ . '/common/jscss/bootstrap-datetimepicker/bootstrap-datetimepicker.' . substr($user_config['language_module'], 0, 2) . '.js')
 			],
 		];
 		_p(tpl_apply($tpl));
 		break;
 
 	case "user_add_yes":
+		$add['expired'] = $_POST['add_expired'];
 		$add['email'] = $_POST['add_email'];
 		$add['status'] = $_POST['add_status'];
 		$add['acl_id'] = (int) $_POST['add_acl_id'];

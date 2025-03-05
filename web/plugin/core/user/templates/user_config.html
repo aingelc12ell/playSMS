@@ -1,3 +1,14 @@
+<script type="text/javascript" src="{{ HTTP_PATH_THEMES }}/common/jscss/moment/moment-with-langs.min.js"></script>
+
+<link rel="stylesheet"
+	href="{{ HTTP_PATH_THEMES }}/common/jscss/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript"
+	src="{{ HTTP_PATH_THEMES }}/common/jscss/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<if.calendar>
+	<script type="text/javascript"
+		src="{{ HTTP_PATH_THEMES }}/common/jscss/bootstrap-datetimepicker/bootstrap-datetimepicker.{{ lang }}.js"></script>
+</if.calendar>
+
 {{ DIALOG_DISPLAY }}
 <h2>{{ FORM_TITLE }}</h2>
 <form action="index.php?app=main&inc=core_user&route=user_config&op=user_config_save{{ URL_UNAME }}&view={{ VIEW }}"
@@ -10,6 +21,13 @@
 			<tr>
 				<td class=label-sizer>{{ Username }}</td>
 				<td>{{ c_username }}</td>
+			</tr>
+			<tr>
+				<td>{{ Account expiry date }}</td>
+				<td>
+					<input type=text maxlength=19 id=up_expired name=up_expired value="{{ expired }}"
+						placeholder="YYYY-MM-DD HH:mm:ss">
+				</td>
 			</tr>
 			<tr>
 				<td>{{ Access Control List }}</td>
@@ -89,3 +107,13 @@
 	<p><input type=submit class=button value='{{ Save }}'> {{ BUTTON_DELETE }}</p>
 </form>
 <p>{{ BUTTON_BACK }}
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#up_expired").datetimepicker({
+                <if.calendar>locale: '{{ lang }}',</if.calendar>
+				format: 'YYYY-MM-DD HH:mm:ss',
+				defaultDate: '{{ default_date }}'
+			});
+        });
+	</script>
