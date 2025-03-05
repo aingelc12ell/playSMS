@@ -97,11 +97,11 @@ function user_getdatabyusername($username)
  * 
  * @param int $uid user ID
  * @param string $field specific field
- * @return string
+ * @return array
  */
 function user_getfieldbyuid($uid, $field)
 {
-	$ret = '';
+	$ret = [];
 
 	// sanitize non-alphanumerics or underscores
 	$field = trim(preg_replace('/[^\p{L}\p{N}_]+/u', '', $field));
@@ -122,11 +122,11 @@ function user_getfieldbyuid($uid, $field)
  * 
  * @param string $username username
  * @param string $field specific field
- * @return string
+ * @return array
  */
 function user_getfieldbyusername($username, $field)
 {
-	$ret = '';
+	$ret = [];
 
 	if ($username = trim($username) && $uid = user_username2uid($username)) {
 		$ret = user_getfieldbyuid($uid, $field);
@@ -284,7 +284,7 @@ function user_add_validate($data = [], $flag_edit = false)
 			$data[$key] = trim($val);
 		}
 
-		// check mandatory fields: name, username and email
+		// check mandatory fields: name, username, email and status
 
 		// check if supplied data contains name
 		if (!(isset($data['name']) && trim($data['name']))) {
@@ -309,6 +309,17 @@ function user_add_validate($data = [], $flag_edit = false)
 
 			return $ret;
 		}
+
+		// check if supplied data contains status
+		$data['status'] = (int) $data['status'];
+		if (!($data['status'] == 2 || $data['status'] == 3 || $data['status'] = 4)) {
+			$ret['error_string'] = _('Account status is mandatory');
+			$ret['status'] = false;
+
+			return $ret;
+		}
+
+
 
 		// name must be at least 1 character
 		if (strlen($data['name']) < 1) {
@@ -446,12 +457,6 @@ function user_add($data = [], $forced = false, $send_email = true)
 	if ($forced || auth_isadmin() || $user_config['status'] == 3 || (!auth_isvalid() && $core_config['main']['enable_register'])) {
 		foreach ( $data as $key => $val ) {
 			$data[$key] = trim($val);
-		}
-
-		// set valid status
-		$data['status'] = (int) $data['status'];
-		if (!($data['status'] == 2 || $data['status'] == 3)) {
-			$data['status'] = 4;
 		}
 
 		// ACL exception for admins

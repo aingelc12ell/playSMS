@@ -1,0 +1,56 @@
+{{ DIALOG_DISPLAY }}
+<h2>{{ FORM_TITLE }}</h2>
+<h3>{{ FORM_SUB_TITLE }}</h3>
+<form action="index.php?app=main&inc=core_user&route=user_mgmnt&op=user_add_yes&view={{ VIEW }}" method=post>
+    {{ CSRF_FORM }}
+
+    <h3>{{ Application options }}</h3>
+    <table class=playsms-table>
+        <tbody>
+            <tr>
+                <td class=label-sizer>{{ Account status }}</td>
+                <td>{{ select_status }} {{ HINT_STATUS }}</td>
+            </tr>
+            <tr>
+                <td>{{ Access Control List }}</td>
+                <td>{{ option_acl }} {{ HINT_ACL }}</td>
+            </tr>
+            <tr>
+                <td class=label-sizer>{{ Parent account }}</td>
+                <td>{{ select_parent }} {{ HINT_PARENT }}</td>
+            </tr>
+            <tr>
+                <td>{{ Username }}</td>
+                <td><input type=text maxlength=100 name=add_username value="{{ username }}"></td>
+            </tr>
+            <tr>
+                <td>{{ Password }}</td>
+                <td><input type=password maxlength=30 name=add_password></td>
+            </tr>
+            <tr>
+                <td>{{ Name }}</td>
+                <td><input type=text maxlength=100 name=add_name value="{{ name }}"></td>
+            </tr>
+            <tr>
+                <td>{{ Email }}</td>
+                <td><input type=text maxlength=250 name=add_email value="{{ email }}"></td>
+            </tr>
+            <tr>
+                <td>{{ Mobile }}</td>
+                <td><input type=text maxlength=20 name=add_mobile value="{{ mobile }}"></td>
+            </tr>
+            <tr>
+                <td>{{ Active language }}</td>
+                <td><select name=add_language_module>{{ option_language_module }}</select></td>
+            </tr>
+            <tr>
+                <td>{{ Timezone }}</td>
+                <td><input type=text size=5 maxlength=5 name=add_datetime_timezone value='{{ datetime_timezone }}'>
+                    {{ HINT_TIMEZONE }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><input type=submit class=button value='{{ Save }}'> {{ BUTTON_ADD }}</p>
+</form>
+<p>{{ BUTTON_BACK }}
