@@ -2,11 +2,11 @@
 
 // Database connection configuration
 $core_config['db']['type'] = 'mysql';		// database engine
-$core_config['db']['host'] = '#DBHOST#';	// database host/server
-$core_config['db']['port'] = '#DBPORT#';	// database port
-$core_config['db']['user'] = '#DBUSER#';	// database username
-$core_config['db']['pass'] = '#DBPASS#';	// database password
-$core_config['db']['name'] = '#DBNAME#';	// database name
+$core_config['db']['host'] = '#MYSQL_HOST#';	// database host/server
+$core_config['db']['port'] = '#MYSQL_TCP_PORT#';	// database port
+$core_config['db']['user'] = '#MYSQL_USER#';	// database username
+$core_config['db']['pass'] = '#MYSQL_PWD#';	// database password
+$core_config['db']['name'] = '#MYSQL_DBNAME#';	// database name
 
 // SMTP configuration
 $core_config['smtp']['relm'] = ''; // yes, not realm, it's relm

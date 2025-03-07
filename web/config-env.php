@@ -2,11 +2,11 @@
 
 // Database connection configuration
 $core_config['db']['type'] = getenv('DBTYPE') ?: 'mysql';		// database engine
-$core_config['db']['host'] = getenv('DBHOST') ?: 'localhost';		// database host/server
-$core_config['db']['port'] = getenv('DBPORT') ?: '3306';		// database port
-$core_config['db']['user'] = getenv('DBUSER') ?: 'playsms';		// database username
-$core_config['db']['pass'] = getenv('DBPASS') ?: 'playsmspassword';	// database password
-$core_config['db']['name'] = getenv('DBNAME') ?: 'playsms';		// database name
+$core_config['db']['host'] = getenv('MYSQL_HOST') ?: 'localhost';		// database host/server
+$core_config['db']['port'] = getenv('MYSQL_PORT') ?: '3306';			// database port
+$core_config['db']['user'] = getenv('MYSQL_USER') ?: 'playsms';			// database username
+$core_config['db']['pass'] = getenv('MYSQL_PWD') ?: 'playsmspassword';		// database password
+$core_config['db']['name'] = getenv('MYSQL_DBNAME') ?: 'playsms';		// database name
 
 // SMTP configuration
 $core_config['smtp']['relm'] = getenv('SMTP_RELM') ?: ''; // yes, not realm, it's relm
