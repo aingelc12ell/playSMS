@@ -92,7 +92,7 @@ function generic_hook_sendsms($smsc, $sms_sender, $sms_footer, $sms_to, $sms_msg
 		if (isset($resp[0]) && (int) $resp[0]) {
 			$remote_id = (int) $resp[0];
 			_log("sent smslog_id:" . $smslog_id . " remote_id:" . $remote_id . " smsc:" . $smsc, 2, "generic_hook_sendsms");
-			if (dba_update(_DB_PREF_ . '_playsms_tblSMSOutgoing', ['remote_id' => $remote_id], ['smslog_id' => $smslog_id, 'flag_deleted' => 0])) {
+			if (dba_update(_DB_PREF_ . '_tblSMSOutgoing', ['remote_id' => $remote_id], ['smslog_id' => $smslog_id, 'flag_deleted' => 0])) {
 				$p_status = 1;
 				dlr($smslog_id, $uid, $p_status);
 			} else {
