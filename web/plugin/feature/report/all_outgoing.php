@@ -280,9 +280,9 @@ switch (_OP_) {
 			<table class=playsms-table-list>
 			<thead>
 			<tr>
-				<th width=15%>" . _('From') . "</th>
-				<th width=15%>" . _('To') . "</th>
-				<th width=65%>" . _('Message') . "</th>
+				<th width=12%>" . _('From') . "</th>
+				<th width=12%>" . _('To') . "</th>
+				<th width=71%>" . _('Message') . "</th>
 				<th width=5% class=\"sorttable_nosort\"><input type=checkbox onclick=CheckUncheckAll(document.fm_all_outgoing)>
 					<div class=pull-right>
 						<a href='#' onClick=\"return SubmitConfirm('" . _('Are you sure you want to delete these items ?') . "', 'fm_all_outgoing');\">" . $icon_config['delete'] . "</a>
