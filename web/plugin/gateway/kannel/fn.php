@@ -72,7 +72,7 @@ function kannel_hook_sendsms($smsc, $sms_sender, $sms_footer, $sms_to, $sms_msg,
 			$URL .= "&coding=2";
 		}
 
-		if ($uid && $username = user_uid2username($uid)) {
+		if ($uid && ($username = user_uid2username($uid))) {
 			$URL .= "&account=" . $uid . "-" . $username; // eg: account=1-admin or account = 27-someuser1
 		}
 		$URL .= "&text=" . urlencode($sms_msg);

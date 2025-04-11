@@ -254,7 +254,7 @@ function common_hook_themes_search($search_category = [], $url = '', $keyword_co
 			}
 		}
 
-		if ($selected = ($ret['category'] == $val ? 'selected' : '') && $c_keyword) {
+		if (($selected = ($ret['category'] == $val ? 'selected' : '')) && $c_keyword) {
 			$ret['dba_keywords'] = [
 				$val => '%' . $c_keyword . '%'
 			];

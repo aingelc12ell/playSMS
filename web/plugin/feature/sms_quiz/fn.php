@@ -62,7 +62,7 @@ function sms_quiz_hook_recvsms_process($sms_datetime, $sms_sender, $quiz_keyword
 	$db_query = "SELECT * FROM " . _DB_PREF_ . "_featureQuiz WHERE quiz_keyword=?";
 	$db_result = dba_query($db_query, [$quiz_keyword]);
 	if ($db_row = dba_fetch_array($db_result)) {
-		if ($uid = $db_row['uid'] && $db_row['quiz_enable']) {
+		if (($uid = $db_row['uid']) && $db_row['quiz_enable']) {
 			$smsc = gateway_decide_smsc($smsc, $db_row['smsc']);
 			_log('begin k:' . $quiz_keyword . ' c:' . $quiz_param, 2, 'sms_quiz');
 			if (sms_quiz_handle($db_row, $sms_datetime, $sms_sender, $quiz_keyword, $quiz_param, $sms_receiver, $smsc, $raw_message)) {

@@ -232,7 +232,7 @@ function core_call_hook($function = '', $param = [])
 
 	if (isset($core_config['plugins']['list']['feature']) && is_array($core_config['plugins']['list']['feature'])) {
 		foreach ( $core_config['plugins']['list']['feature'] as $plugin ) {
-			if ($plugin && $ret = core_hook($plugin, $function, $param)) {
+			if ($plugin && ($ret = core_hook($plugin, $function, $param))) {
 
 				break;
 			}
