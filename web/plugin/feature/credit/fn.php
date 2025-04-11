@@ -357,7 +357,7 @@ function credit_hook_rate_update()
 	$db_query = "SELECT uid, status FROM " . _DB_PREF_ . "_tblUser WHERE flag_deleted='0'";
 	$db_result = dba_query($db_query);
 	while ($db_row = dba_fetch_array($db_result)) {
-		if ($c_uid = (int) $db_row['uid'] && $c_status = (int) $db_row['status']) {
+		if (($c_uid = (int) $db_row['uid']) && ($c_status = (int) $db_row['status'])) {
 			// get credit
 			$credit = _credit_get_credit($c_uid);
 
@@ -390,7 +390,7 @@ function _credit_getbyuid($uid)
 {
 	$credit = 0;
 
-	if ($uid = (int) $uid && $username = user_uid2username($uid)) {
+	if (($uid = (int) $uid) && ($username = user_uid2username($uid))) {
 		$credit = credit_hook_rate_getusercredit($username);
 	}
 
