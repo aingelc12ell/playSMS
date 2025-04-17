@@ -27,28 +27,15 @@ function playsmsd_pid_get($process)
 {
 	global $core_config;
 
+	$pids = [];
+
 	if ($core_config['daemon']['PLAYSMSD_CONF'] && $process) {
-		$pids = trim(shell_exec(sprintf(
-			<<<'EOSH'
-ps -eo pid,command | grep -F %s | grep -F %s | grep -vF grep | sed -e 's/^ *//' -e 's/ *$//' | cut -d' ' -f1 | tr '\n' ' '
-EOSH
-			,
-			escapeshellarg($core_config['daemon']['PLAYSMSD_CONF'])
-			,
-			escapeshellarg($process)
-		)));
-
-		if ($pids) {
-			$ret = preg_split('/\s+/', $pids);
-
-			if ($ret !== false) {
-
-				return $ret;
-			}
-		}
+		$command = "ps ax|grep 'php'|grep 'playsmsd'|grep '" . escapeshellarg($process) . "'|grep -v grep|awk 'BEGIN {ORS=\",\"} {print $1}'|sed 's/,$//'";
+		
+		$pids = explode(',', shell_exec($command));
 	}
 
-	return [];
+	return $pids;
 }
 
 /**

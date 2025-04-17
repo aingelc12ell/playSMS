@@ -510,7 +510,7 @@ function user_add($data = [], $forced = false, $send_email = true)
 		$data['webservices_ip'] = '127.0.0.1';
 
 		// format expired
-		$data['expired'] = date('Y-m-d', strtotime($data['expired']));
+		$data['expired'] = core_adjust_datetime($data['expired']);
 
 		$v = user_add_validate($data);
 		if ($v['status']) {
