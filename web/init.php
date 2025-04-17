@@ -16,6 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with playSMS. If not, see <http://www.gnu.org/licenses/>.
  */
+
+if (defined('INCLUDE_INIT_PHP')) return; define('INCLUDE_INIT_PHP',1);
+
 if (is_file('config.php')) {
 	require 'config.php';
 } else {
