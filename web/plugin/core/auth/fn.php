@@ -431,7 +431,8 @@ function auth_isacl($acl)
  */
 function auth_block()
 {
-	header("Location: " . _u('index.php?app=main&inc=core_auth&route=block&op=block'));
+	header("Location: " . _HTTP_PATH_BASE_ . 'index.php?app=main&inc=core_auth&route=block&op=block');
+
 	exit();
 }
 
