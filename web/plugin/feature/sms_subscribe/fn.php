@@ -62,7 +62,7 @@ function sms_subscribe_hook_recvsms_process($sms_datetime, $sms_sender, $subscri
 	$db_query = "SELECT * FROM " . _DB_PREF_ . "_featureSubscribe WHERE subscribe_keyword=?";
 	$db_result = dba_query($db_query, [$subscribe_keyword]);
 	if ($db_row = dba_fetch_array($db_result)) {
-		if ($uid = $db_row['uid'] && $db_row['subscribe_enable']) {
+		if (($uid = $db_row['uid']) && $db_row['subscribe_enable']) {
 			_log('begin k:' . $subscribe_keyword . ' p:' . $subscribe_param, 2, 'sms_subscribe');
 			if (sms_subscribe_handle($db_row, $sms_datetime, $sms_sender, $subscribe_keyword, $subscribe_param, $sms_receiver, $smsc, $raw_message)) {
 				$status = true;

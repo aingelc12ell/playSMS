@@ -146,11 +146,11 @@ fi
 echo "INSTALL DATA:"
 echo
 
-echo "MySQL username      = $DBUSER"
-echo "MySQL password      = $DBPASS"
-echo "MySQL database      = $DBNAME"
-echo "MySQL host          = $DBHOST"
-echo "MySQL port          = $DBPORT"
+echo "MySQL username      = $MYSQL_USER"
+echo "MySQL password      = $MYSQL_PWD"
+echo "MySQL database      = $MYSQL_DBNAME"
+echo "MySQL host          = $MYSQL_HOST"
+echo "MySQL port          = $MYSQL_TCP_PORT"
 echo
 echo "Web server user     = $WEBSERVERUSER"
 echo "Web server group    = $WEBSERVERGROUP"
@@ -266,22 +266,24 @@ echo -n .
 cp -rf web/* $PATHWEB
 set +e
 echo -n .
-mysqladmin -u $DBUSER -p$DBPASS -h $DBHOST -P $DBPORT create $DBNAME >/dev/null 2>&1
+## TODO check with only dbname
+mysqladmin -u $MYSQL_USER -p$MYSQL_PWD -h $MYSQL_HOST -P $MYSQL_TCP_PORT create $MYSQL_DBNAME >/dev/null 2>&1
 set -e
 echo -n .
-mysql -u $DBUSER -p$DBPASS -h $DBHOST -P $DBPORT $DBNAME < db/playsms.sql >/dev/null 2>&1
+## TODO check with only dbname
+mysql -u $MYSQL_USER -p$MYSQL_PWD -h $MYSQL_HOST -P $MYSQL_TCP_PORT $MYSQL_DBNAME < db/playsms.sql >/dev/null 2>&1
 echo -n .
 cp $PATHWEB/config-dist.php $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBHOST#/$DBHOST/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_HOST#/$MYSQL_HOST/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBPORT#/$DBPORT/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_TCP_PORT#/$MYSQL_TCP_PORT/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBNAME#/$DBNAME/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_DBNAME#/$MYSQL_DBNAME/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBUSER#/$DBUSER/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_USER#/$MYSQL_USER/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBPASS#/$DBPASS/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_PWD#/$MYSQL_PWD/g" $PATHWEB/config.php
 echo -n .
 sed -i "s|#PATHLOG#|$PATHLOG|g" $PATHWEB/config.php
 echo -n .

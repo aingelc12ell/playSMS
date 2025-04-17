@@ -85,7 +85,7 @@ function user_getdatabyusername($username)
 {
 	$ret = [];
 
-	if ($username = trim($username) && $uid = user_username2uid($username)) {
+	if (($username = trim($username)) && ($uid = user_username2uid($username))) {
 		$ret = user_getdatabyuid($uid);
 	}
 
@@ -128,7 +128,7 @@ function user_getfieldbyusername($username, $field)
 {
 	$ret = [];
 
-	if ($username = trim($username) && $uid = user_username2uid($username)) {
+	if (($username = trim($username)) && ($uid = user_username2uid($username))) {
 		$ret = user_getfieldbyuid($uid, $field);
 	}
 
@@ -214,7 +214,7 @@ function user_mobile2username($mobile)
 {
 	$ret = null;
 
-	if ($mobile = trim($mobile) && $uid = user_mobile2uid($mobile)) {
+	if (($mobile = trim($mobile)) && ($uid = user_mobile2uid($mobile))) {
 		$ret = user_uid2username($uid);
 	}
 
@@ -254,7 +254,7 @@ function user_email2username($email)
 {
 	$ret = null;
 
-	if ($email = trim($email) && $uid = user_email2uid($email)) {
+	if (($email = trim($email)) && ($uid = user_email2uid($email))) {
 		$ret = user_uid2username($uid);
 	}
 

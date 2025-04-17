@@ -63,7 +63,7 @@ function sms_poll_hook_recvsms_process($sms_datetime, $sms_sender, $poll_keyword
 	$db_query = "SELECT * FROM " . _DB_PREF_ . "_featurePoll WHERE poll_keyword=?";
 	$db_result = dba_query($db_query, [$poll_keyword]);
 	if ($db_row = dba_fetch_array($db_result)) {
-		if ($uid = $db_row['uid'] && $poll_id = $db_row['poll_id'] && $db_row['poll_enable']) {
+		if (($uid = $db_row['uid']) && ($poll_id = $db_row['poll_id']) && $db_row['poll_enable']) {
 			_log('begin poll_id:' . $poll_id . ' k:' . $poll_keyword . ' c:' . $poll_param, 2, 'sms_poll');
 			if (sms_poll_handle($db_row, $sms_datetime, $sms_sender, $poll_keyword, $poll_param, $sms_receiver, $smsc, $raw_message)) {
 

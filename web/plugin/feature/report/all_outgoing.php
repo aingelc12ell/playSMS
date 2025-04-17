@@ -280,8 +280,9 @@ switch (_OP_) {
 			<table class=playsms-table-list>
 			<thead>
 			<tr>
-				<th width=20%>" . _('To') . "</th>
-				<th width=75%>" . _('Message') . "</th>
+				<th width=12%>" . _('From') . "</th>
+				<th width=12%>" . _('To') . "</th>
+				<th width=71%>" . _('Message') . "</th>
 				<th width=5% class=\"sorttable_nosort\"><input type=checkbox onclick=CheckUncheckAll(document.fm_all_outgoing)>
 					<div class=pull-right>
 						<a href='#' onClick=\"return SubmitConfirm('" . _('Are you sure you want to delete these items ?') . "', 'fm_all_outgoing');\">" . $icon_config['delete'] . "</a>
@@ -294,7 +295,7 @@ switch (_OP_) {
 		// get content
 		if ($is_admin) {
 			$db_query = "
-				SELECT uid, p_gateway, p_smsc, smslog_id, p_dst, p_sms_type, p_msg, p_footer, p_datetime, p_update, p_status, queue_code
+				SELECT uid, p_gateway, p_smsc, smslog_id, p_src, p_dst, p_sms_type, p_msg, p_footer, p_datetime, p_update, p_status, queue_code
 				FROM " . _DB_PREF_ . "_tblSMSOutgoing
 				WHERE flag_deleted=0 " . $sql_search . "
 				ORDER BY id DESC
@@ -302,7 +303,7 @@ switch (_OP_) {
 				OFFSET " . (int) $nav['offset'];
 		} else {
 			$db_query = "
-				SELECT uid, p_gateway, p_smsc, smslog_id, p_dst, p_sms_type, p_msg, p_footer, p_datetime, p_update, p_status, queue_code
+				SELECT uid, p_gateway, p_smsc, smslog_id, p_src, p_dst, p_sms_type, p_msg, p_footer, p_datetime, p_update, p_status, queue_code
 				FROM " . _DB_PREF_ . "_tblSMSOutgoing
 				WHERE uid='" . $user_config['uid'] . "' AND flag_deleted=0 " . $sql_search . "
 				ORDER BY id DESC
@@ -318,6 +319,7 @@ switch (_OP_) {
 			$db_row = _display($db_row);
 			$smslog_id = $db_row['smslog_id'];
 			$p_uid = $db_row['uid'];
+			$p_src = $db_row['p_src'];
 			$p_dst = $db_row['p_dst'];
 			$current_p_dst = report_resolve_sender($p_uid, $p_dst);
 			$p_sms_type = $db_row['p_sms_type'];
@@ -377,6 +379,7 @@ switch (_OP_) {
 			$j++;
 			$content .= "
 				<tr>
+					<td><div>" . $p_src . "</div></td>
 					<td><div>" . $current_p_dst . "</div></td>
 					<td>" . $c_message . "</td>
 					<td>

@@ -25,6 +25,8 @@ $auth_captcha_width = 256;
 $auth_captcha_height = 80;
 
 // enable/disable captcha
-$auth_captcha_form_login = true;
-$auth_captcha_form_forgot = true;
-$auth_captcha_form_register = true;
+
+$auth_captcha_form_login = getenv('ENABLE_CAPTCHA_LOGIN') ? in_array(getenv('ENABLE_CAPTCHA_LOGIN'), array('true', '1', 'yes')) : true;
+$auth_captcha_form_forgot = getenv('ENABLE_CAPTCHA_FORGOT') ? in_array(getenv('ENABLE_CAPTCHA_FORGOT'), array('true', '1', 'yes')) : true;
+$auth_captcha_form_register = getenv('ENABLE_CAPTCHA_REGISTER') ? in_array(getenv('ENABLE_CAPTCHA_REGISTER'), array('true', '1', 'yes')) : true;
+

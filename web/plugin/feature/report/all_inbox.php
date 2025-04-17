@@ -243,9 +243,7 @@ switch (_OP_) {
 			</div>
 			<div class=table-responsive>
 			<table class=playsms-table-list>
-			<thead>";
-		if ($is_admin) {
-			$content .= "
+			<thead>
 				<tr>
 					<th width=20%>" . _('From') . "</th>
 					<th width=20%>" . _('To') . "</th>
@@ -255,27 +253,14 @@ switch (_OP_) {
 							<a href='#' onClick=\"return SubmitConfirm('" . _('Are you sure you want to delete these items ?') . "', 'fm_all_inbox');\">" . $icon_config['delete'] . "</a>
 						</div>
 					</th>
-				</tr>";
-		} else {
-			$content .= "
-				<tr>
-					<th width=20%>" . _('From') . "</th>
-					<th width=55%>" . _('Message') . "</th>
-					<th width=5% class=\"sorttable_nosort\"><input type=checkbox onclick=CheckUncheckAll(document.fm_all_inbox)>
-						<div class=pull-right>
-							<a href='#' onClick=\"return SubmitConfirm('" . _('Are you sure you want to delete these items ?') . "', 'fm_all_inbox');\">" . $icon_config['delete'] . "</a>
-						</div>
-					</th>
-				</tr>";
-		}
-		$content .= "
+				</tr>
 			</thead>
 			<tbody>";
 
 		// get content
 		if ($is_admin) {
 			$db_query = "
-				SELECT in_id, in_uid, in_sender, in_msg, in_datetime, username
+				SELECT in_id, in_uid, in_sender, in_receiver, in_msg, in_datetime, username
 				FROM " . _DB_PREF_ . "_tblSMSInbox A 
 				LEFT JOIN " . _DB_PREF_ . "_tblUser B 
 				ON A.in_uid=B.uid 
@@ -285,7 +270,7 @@ switch (_OP_) {
 				OFFSET " . (int) $nav['offset'];
 		} else {
 			$db_query = "
-				SELECT in_id, in_uid, in_sender, in_msg, in_datetime
+				SELECT in_id, in_uid, in_sender, in_receiver, in_msg, in_datetime
 				FROM " . _DB_PREF_ . "_tblSMSInbox
 				WHERE in_uid='" . $user_config['uid'] . "' AND flag_deleted=0 " . $sql_search . "
 				ORDER BY in_id DESC
@@ -305,9 +290,9 @@ switch (_OP_) {
 			$current_in_sender = report_resolve_sender($in_uid, $in_sender);
 			$in_datetime = core_display_datetime($db_row['in_datetime']);
 			if ($is_admin) {
-				$in_receiver = $db_row['username'];
+				$in_receiver = $db_row['username'].'/'.$db_row['in_receiver'];
 			} else {
-				$in_receiver = $user_config['username'];
+				$in_receiver = $db_row['in_receiver'];
 			}
 
 			$msg = $db_row['in_msg'];
@@ -327,26 +312,15 @@ switch (_OP_) {
 				<div id=\"all_inbox_msg\">" . $in_msg . "</div>
 				<div id=\"msg_option\">" . $reply . " " . $forward . "<strong>" . $pm . "</strong></div>";
 			$j++;
-			if ($is_admin) {
-				$content .= "
-					<tr>
-						<td><div>" . $current_in_sender . "</div></td>
-						<td><div>" . $in_receiver . "</div></td>
-						<td>" . $c_message . "</td>
-						<td>
-							<input type=checkbox name=itemid[] value='" . $in_id . "'>
-						</td>
-					</tr>";
-			} else {
-				$content .= "
-					<tr>
-						<td><div>" . $current_in_sender . "</div></td>
-						<td>" . $c_message . "</td>
-						<td>
-							<input type=checkbox name=itemid[] value='" . $in_id . "'>
-						</td>
-					</tr>";
-			}
+			$content .= "
+				<tr>
+					<td><div>" . $current_in_sender . "</div></td>
+					<td><div>" . $in_receiver . "</div></td>
+					<td>" . $c_message . "</td>
+					<td>
+						<input type=checkbox name=itemid[] value='" . $in_id . "'>
+					</td>
+				</tr>";
 		}
 
 		// footer
