@@ -80,7 +80,11 @@ if (_OP_ == 'login') {
 			auth_session_setup($uid);
 
 			if (auth_isvalid()) {
-				_log("u:" . $_SESSION['username'] . " uid:" . $uid . " status:" . $_SESSION['status'] . " sid:" . session_id() . " ip:" . _REMOTE_ADDR_, 2, "auth login");
+				if (user_is_expired($uid)) {
+					$_SESSION['dialog']['danger'][] = _('Account is expired');
+				} else {
+					_log("u:" . $_SESSION['username'] . " uid:" . $uid . " status:" . $_SESSION['status'] . " sid:" . session_id() . " ip:" . _REMOTE_ADDR_, 2, "auth login");
+				}
 			} else {
 				_log("unable to setup session u:" . $_SESSION['username'] . " status:" . $_SESSION['status'] . " sid:" . session_id() . " ip:" . _REMOTE_ADDR_, 2, "auth login");
 				$_SESSION['dialog']['danger'][] = _('Unable to login');
@@ -89,11 +93,7 @@ if (_OP_ == 'login') {
 				auth_session_destroy();
 			}
 		} else {
-			if (user_is_expired($uid)) {
-				$_SESSION['dialog']['danger'][] = _('Account is expired');
-			} else {
-				$_SESSION['dialog']['danger'][] = _('Invalid username or password');
-			}
+			$_SESSION['dialog']['danger'][] = _('Invalid username or password');
 		}
 	}
 
