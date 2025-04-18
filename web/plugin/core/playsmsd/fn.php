@@ -31,8 +31,15 @@ function playsmsd_pid_get($process)
 
 	if ($core_config['daemon']['PLAYSMSD_CONF'] && $process) {
 		$command = "ps ax|grep 'php'|grep 'playsmsd'|grep '" . escapeshellarg($process) . "'|grep -v grep|awk 'BEGIN {ORS=\",\"} {print $1}'|sed 's/,$//'";
-		
-		$pids = explode(',', shell_exec($command));
+
+		$c_pids = explode(',', shell_exec($command));
+
+		foreach ( $c_pids as $pid => $val ) {
+			$val = (int) $val;
+			if ($val > 0) {
+				$pids[] = $val;
+			}
+		}
 	}
 
 	return $pids;
