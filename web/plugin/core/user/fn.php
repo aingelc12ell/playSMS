@@ -311,12 +311,14 @@ function user_add_validate($data = [], $flag_edit = false)
 		}
 
 		// check if supplied data contains status
-		$data['status'] = (int) $data['status'];
-		if (!($data['status'] === 2 || $data['status'] === 3 || $data['status'] === 4)) {
-			$ret['error_string'] = _('Account status must be a known value');
-			$ret['status'] = false;
+		if (isset($data['status'])) {
+			$data['status'] = (int) $data['status'];
+			if (!($data['status'] === 2 || $data['status'] === 3 || $data['status'] === 4)) {
+				$ret['error_string'] = _('Account status must be a known value');
+				$ret['status'] = false;
 
-			return $ret;
+				return $ret;
+			}
 		}
 
 		// name must be at least 1 character
