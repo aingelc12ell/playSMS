@@ -1,14 +1,15 @@
 # README
 
-playSMS version **1.4.8-2410101245**
+playSMS version [1.4.8-2504201530](https://github.com/playsms/playsms/releases/tag/1.4.8-2504201530)
 
 Official project website:
 
 * https://playsms.org
 
-Official playSMS forum:
+Companion websites:
 
-* https://playsms.discourse.group
+* [playSMS forum](https://playsms.discourse.group)
+* [Project docker-playsms](https://github.com/playsms/docker-playsms)
 
 
 ## Description
