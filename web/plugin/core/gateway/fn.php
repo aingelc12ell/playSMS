@@ -466,13 +466,14 @@ function gateway_callback_access($gateway, $callback_access_field, $smsc = '')
 	$callback_access = isset($plugin_config[$gateway][$callback_access_field]) && trim($plugin_config[$gateway][$callback_access_field])
 		? trim($plugin_config[$gateway][$callback_access_field]) : '';
 
-	$callback_access = preg_replace('/[^0-9a-zA-Z\.\-_,]+/', '', $callback_access);
+	$callback_access = preg_replace('/[^0-9a-zA-Z\.\-_,\/]+/', '', $callback_access);
 	if ($servers = explode(',', $callback_access)) {
 		foreach ( $servers as $server ) {
-			if ($server && $server == _REMOTE_ADDR_) {
-
-				return true;
-			}
+                        if (strpos($server,'/')==false) $server .= '/32';
+                        list($subnet, $mask) = explode('/', $server);
+                        if(((ip2long(_REMOTE_ADDR_) & ($mask = ~ ((1 << (32 - $mask)) - 1))) == (ip2long($subnet) & $mask))) {
+                                return true;
+                        }
 		}
 	}
 
