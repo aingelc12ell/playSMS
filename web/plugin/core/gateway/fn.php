@@ -469,11 +469,9 @@ function gateway_callback_access($gateway, $callback_access_field, $smsc = '')
 	$callback_access = preg_replace('/[^0-9a-zA-Z\.\-_,\/]+/', '', $callback_access);
 	if ($servers = explode(',', $callback_access)) {
 		foreach ( $servers as $server ) {
-                        if (strpos($server,'/')==false) $server .= '/32';
-                        list($subnet, $mask) = explode('/', $server);
-                        if(((ip2long(_REMOTE_ADDR_) & ($mask = ~ ((1 << (32 - $mask)) - 1))) == (ip2long($subnet) & $mask))) {
-                                return true;
-                        }
+			if (core_net_match($server, _REMOTE_ADDR, true)) {
+				return true;
+			}
 		}
 	}
 
