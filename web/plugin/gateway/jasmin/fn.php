@@ -63,8 +63,12 @@ function jasmin_hook_sendsms($smsc, $sms_sender, $sms_footer, $sms_to, $sms_msg,
 			}
 		}
 
-		$callback_url = isset($plugin_config['jasmin']['callback_authcode']) && $plugin_config['jasmin']['callback_authcode']
-			? $plugin_config['jasmin']['callback_url'] . "?authcode=" . $plugin_config['jasmin']['callback_authcode'] : $plugin_config['jasmin']['callback_url'];
+		$callback_args = [];
+		if (isset($plugin_config['jasmin']['callback_authcode']) && $plugin_config['jasmin']['callback_authcode']) {
+			$callback_args['authcode']=$plugin_config['jasmin']['callback_authcode'];
+		}
+		$callback_args['smsc'] = $smsc;
+		$callback_url = $plugin_config['jasmin']['callback_url'].'?'.http_build_query($callback_args);
 
 		$query_string = "username=" . urlencode($plugin_config['jasmin']['api_username']) . "&password=" . urlencode($plugin_config['jasmin']['api_password']);
 		$query_string .= "&to=" . urlencode($sms_to) . "&from=" . urlencode($sms_sender) . "&content=" . urlencode($sms_msg) . $unicode_query_string;

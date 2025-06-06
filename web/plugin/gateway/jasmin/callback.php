@@ -41,6 +41,9 @@ if ($remote_id && $status) {
 	$smsc = isset($_REQUEST['origin-connector']) ? $_REQUEST['origin-connector'] : ''; // SMSC in incoming SMS push
 }
 
+// Jasmin 0.11 will send it's own IDs in id/connector, thus we need to pass smsc name
+if (isset($_REQUEST['smsc'])) $smsc = $_REQUEST['smsc'];
+
 $authcode = isset($_REQUEST['authcode']) && trim($_REQUEST['authcode']) ? trim($_REQUEST['authcode']) : '';
 
 // validate authcode
