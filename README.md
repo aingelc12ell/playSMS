@@ -1,6 +1,6 @@
 # README
 
-playSMS version [1.4.8-2504201530](https://github.com/playsms/playsms/releases/tag/1.4.8-2504201530)
+playSMS version [1.4.8-2506111130](https://github.com/playsms/playsms/releases/tag/1.4.8-2506111130)
 
 Official project website:
 
@@ -8,7 +8,8 @@ Official project website:
 
 Companion websites:
 
-* [playSMS forum](https://playsms.discourse.group)
+* [playSMS projects](https://github.com/playsms)
+* [playSMS discussions](https://github.com/playsms/playsms/discussions)
 * [Project docker-playsms](https://github.com/playsms/docker-playsms)
 
 
@@ -23,11 +24,9 @@ communication tools
 
 ## Feature Highlights
 
-* Multiple database engine supported (using included PHP PEAR DB)
 * Send SMS to single mobile phone
 * Send SMS broadcasted to a group of mobile phones, or SMS bulk
 * Support sending text, flash and unicode messages
-* Capable of handling large amount of SMS (a user tested 200k SMS a day)
 * Receive private SMS to Inbox and forward it to email (mobile2web) and user's mobile phone
 * Forward single SMS from mobile to a group of mobile phones 
 * Provides SMS to email and email to SMS by polling mailbox
@@ -53,9 +52,6 @@ communication tools
 * Multiple SMSC activated and routable
 * Timezone settings
 * Multi-language user interface (English, French, Bahasa Indonesia, Russian and a few others)
-* Easily add new language for user interface
-* Web-based interface
-* Android app for playSMS available on Google Play Store
 * Multi-domain from single playSMS installation with site branding for reseller supports
 
 
@@ -85,7 +81,7 @@ Please read [INSTALL](INSTALL.md "playSMS installation document") and then [FAQ]
 
 ## Project Founder and Maintainer
 
-* Anton Raharja (https://antonraharja.com)
+* [Anton Raharja](araharja@protonmail.com)
 
 
 ## Contributors
@@ -97,3 +93,4 @@ Information about code contributors can be found here:
 Information about security contributors and reporters, and how to report them, can be found here:
 
 * https://github.com/playsms/playsms/security/policy
+
