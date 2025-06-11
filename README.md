@@ -81,7 +81,7 @@ Please read [INSTALL](INSTALL.md "playSMS installation document") and then [FAQ]
 
 ## Project Founder and Maintainer
 
-* [Anton Raharja](araharja@protonmail.com)
+* Anton Raharja (araharja@protonmail.com)
 
 
 ## Contributors
