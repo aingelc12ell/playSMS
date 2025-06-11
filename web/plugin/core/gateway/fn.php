@@ -466,11 +466,10 @@ function gateway_callback_access($gateway, $callback_access_field, $smsc = '')
 	$callback_access = isset($plugin_config[$gateway][$callback_access_field]) && trim($plugin_config[$gateway][$callback_access_field])
 		? trim($plugin_config[$gateway][$callback_access_field]) : '';
 
-	$callback_access = preg_replace('/[^0-9a-zA-Z\.\-_,]+/', '', $callback_access);
+	$callback_access = preg_replace('/[^0-9a-zA-Z\.\-_,\/]+/', '', $callback_access);
 	if ($servers = explode(',', $callback_access)) {
 		foreach ( $servers as $server ) {
-			if ($server && $server == _REMOTE_ADDR_) {
-
+			if ($server && core_net_match($server, _REMOTE_ADDR_, true)) {
 				return true;
 			}
 		}
