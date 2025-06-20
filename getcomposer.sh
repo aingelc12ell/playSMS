@@ -3,7 +3,7 @@
 PATHSRC=$(pwd)
 
 echo
-echo "Getting composer from https://getcomposer.com"
+echo "Getting composer from https://getcomposer.org"
 echo
 echo "Please wait while this script downloading composer"
 echo
@@ -30,7 +30,7 @@ if [ -x "./composer.phar" ]; then
 	echo
 	exit $?
 else
-	echo "ERROR: unable to get composer from https://getcomposer.com"
+	echo "ERROR: unable to get composer from https://getcomposer.org"
 	echo
 	exit 1
 fi
