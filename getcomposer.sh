@@ -27,13 +27,10 @@ echo
 if [ -x "./composer.phar" ]; then
 	cd "$PATHSRC"
 	./composer.phar update
+	echo
+	exit $?
 else
 	echo "ERROR: unable to get composer from https://getcomposer.com"
 	echo
 	exit 1
 fi
-
-echo
-echo "Composer has been installed and packages has been updated"
-echo
-exit 0
