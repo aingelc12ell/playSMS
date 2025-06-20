@@ -8,14 +8,15 @@ echo
 echo "Please wait while this script downloading composer"
 echo
 
-php -r "readfile('https://getcomposer.org/installer');" | php >/dev/null 2>&1
+rm -f ./composer ./composer.phar
 
-if [ -e "composer.phar" ]; then
-	#rm -f /usr/local/bin/composer /usr/local/bin/composer.phar >/dev/null 2>&1
-	rm -f ./composer >/dev/null 2>&1
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+
+if [ -e "./composer.phar" ]; then
 	ln -s ./composer.phar ./composer >/dev/null 2>&1
-	#mv composer composer.phar /usr/local/bin/ >/dev/null 2>&1
-	#chmod +x /usr/local/bin/composer /usr/local/bin/composer.phar >/dev/null 2>&1
 	chmod +x ./composer.phar >/dev/null 2>&1
 fi
 
