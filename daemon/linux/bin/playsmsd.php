@@ -96,7 +96,7 @@ if ($core_config['daemon']['PLAYSMSD_CONF']) {
 }
 
 $continue = false;
-foreach ( $ini_files as $core_config['daemon']['PLAYSMSD_CONF'] ) {
+foreach ($ini_files as $core_config['daemon']['PLAYSMSD_CONF']) {
 	$core_config['daemon']['PLAYSMSD_CONF_REALPATH'] = realpath($core_config['daemon']['PLAYSMSD_CONF']);
 	$core_config['daemon']['PLAYSMSD_CONF'] = $core_config['daemon']['PLAYSMSD_CONF_REALPATH'] !== false ? $core_config['daemon']['PLAYSMSD_CONF_REALPATH'] : $core_config['daemon']['PLAYSMSD_CONF'];
 	if ($core_config['daemon']['PLAYSMSD_CONF'] && is_file($core_config['daemon']['PLAYSMSD_CONF'])) {
@@ -184,7 +184,6 @@ if (is_dir($core_config['daemon']['PLAYSMS_INSTALL_PATH'])) {
 				'last_update' => time(),
 				'data' => $json
 			];
-
 		}
 		registry_update(0, 'core', 'playsmsd', $items);
 	}
@@ -448,12 +447,18 @@ if (is_dir($core_config['daemon']['PLAYSMS_INSTALL_PATH'])) {
 					// execute phase
 					$queue = array_unique($queue);
 					if (count($queue) > 0) {
-						foreach ( $queue as $q ) {
+						foreach ($queue as $q) {
 							// if found queue and it's not currently running, then run it
 							if ($q && !playsmsd_pid_get($q)) {
-								$RUN_THIS = "nohup " . $core_config['daemon']['PLAYSMSD_COMMAND'] . " sendqueue once " . $q . " >/dev/null 2>&1 &";
-								//echo $COMMAND . " execute:" . $RUN_THIS . PHP_EOL;
-								shell_exec($RUN_THIS);
+
+								// but, lets check if the number of sendqueue process is lower than the limit
+								$child_pids = playsmsd_child_pids();
+								$num_of_child_pids = !empty($child_pids['sendqueue']) && is_array($child_pids['sendqueue']) ? count($child_pids['sendqueue']) : 0;
+								if ($num_of_child_pids <= $core_config['sendsmsd_queue']) {
+									$RUN_THIS = "nohup " . $core_config['daemon']['PLAYSMSD_COMMAND'] . " sendqueue once " . $q . " >/dev/null 2>&1 &";
+									//echo $COMMAND . " execute:" . $RUN_THIS . PHP_EOL;
+									shell_exec($RUN_THIS);
+								}
 							}
 						}
 					}
@@ -479,4 +484,3 @@ if (is_dir($core_config['daemon']['PLAYSMS_INSTALL_PATH'])) {
 		// while true
 	}
 }
-
