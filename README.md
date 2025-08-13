@@ -1,6 +1,6 @@
 # README
 
-playSMS version [1.4.8-2506111130](https://github.com/playsms/playsms/releases/tag/1.4.8-2506111130)
+playSMS version [1.4.8-2508131200](https://github.com/playsms/playsms/releases/tag/1.4.8-2508131200)
 
 Official project website:
 
