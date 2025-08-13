@@ -251,4 +251,4 @@ Further steps usually required to solidify playSMS installation, for example:
 - To install and maintain fail2ban and its playSMS jail configuration
 - Other steps to improve performance and security
 
-Discuss them more in https://playsms.discourse.group
+Ask questions in [https://github.com/playsms/playsms/discussions](https://github.com/playsms/playsms/discussions)
